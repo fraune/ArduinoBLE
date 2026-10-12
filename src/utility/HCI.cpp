@@ -997,7 +997,11 @@ void HCIClass::handleEventPkt(uint8_t /*plen*/, uint8_t pdata[])
     _cmdCompleteOpcode = cmdCompleteHeader->opcode;
     _cmdCompleteStatus = cmdCompleteHeader->status;
     _cmdResponseLen = pdata[1] - sizeof(CmdComplete);
-    _cmdResponse = &pdata[sizeof(HCIEventHdr) + sizeof(CmdComplete)];
+    if (_cmdResponseLen > sizeof(_cmdResponseBuffer)) {
+      _cmdResponseLen = sizeof(_cmdResponseBuffer);
+    }
+    memcpy(_cmdResponseBuffer, &pdata[sizeof(HCIEventHdr) + sizeof(CmdComplete)], _cmdResponseLen);
+    _cmdResponse = _cmdResponseBuffer;
 
   }
   else if (eventHdr->evt == EVT_CMD_STATUS)

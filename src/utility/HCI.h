@@ -155,6 +155,7 @@ private:
   int _cmdCompleteStatus;
   uint8_t _cmdResponseLen;
   uint8_t* _cmdResponse;
+  uint8_t _cmdResponseBuffer[32];
 
   uint8_t _maxPkt;
   uint8_t _pendingPkt;
